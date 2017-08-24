@@ -9,11 +9,13 @@ var webpackConfig = process.env.NODE_ENV === 'testing'
   : require('./webpack.dev.conf')
 
 // default port where dev server listens for incoming traffic
+// 如果没有指定运行端口，使用 config.dev.port 作为运行端口
 var port = process.env.PORT || config.dev.port
 // Define HTTP proxies to your custom API backend
 // https://github.com/chimurai/http-proxy-middleware
+// 使用 config.dev.proxyTable 的配置作为 proxyTable 的代理配置
 var proxyTable = config.dev.proxyTable
-
+// 使用 express 启动一个服务
 var app = express()
 // get data from 'data.json'
 var appData = require('../data.json');
@@ -44,9 +46,9 @@ apiRouters.get('/ratings',function(req,res){
 })
 // express.use==>router
 app.use('/api',apiRouters);
-
+// 启动 webpack 进行编译
 var compiler = webpack(webpackConfig)
-
+// 启动 webpack-dev-middleware，将 编译后的文件暂存到内存中
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
   stats: {
@@ -54,7 +56,7 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
     chunks: false
   }
 })
-
+// 启动 webpack-hot-middleware，也就是我们常说的 Hot-reload
 var hotMiddleware = require('webpack-hot-middleware')(compiler)
 // force page reload when html-webpack-plugin template changes
 compiler.plugin('compilation', function (compilation) {
@@ -65,6 +67,7 @@ compiler.plugin('compilation', function (compilation) {
 })
 
 // proxy api requests
+// 将 proxyTable 中的请求配置挂在到启动的 express 服务上
 Object.keys(proxyTable).forEach(function (context) {
   var options = proxyTable[context]
   if (typeof options === 'string') {
@@ -74,19 +77,24 @@ Object.keys(proxyTable).forEach(function (context) {
 })
 
 // handle fallback for HTML5 history API
+// 使用 connect-history-api-fallback 匹配资源，如果不匹配就可以重定向到指定地址
 app.use(require('connect-history-api-fallback')())
 
 // serve webpack bundle output
+// 将暂存到内存中的 webpack 编译后的文件挂在到 express 服务上
 app.use(devMiddleware)
 
 // enable hot-reload and state-preserving
 // compilation error display
+// 将 Hot-reload 挂在到 express 服务上
 app.use(hotMiddleware)
 
 // serve pure static assets
+// 拼接 static 文件夹的静态资源路径
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
+// 为静态资源提供响应服务
 app.use(staticPath, express.static('./static'))
-
+// 让我们这个 express 服务监听 port 的请求，并且将此服务作为 dev-server.js 的接口暴露
 module.exports = app.listen(port, function (err) {
   if (err) {
     console.log(err)
