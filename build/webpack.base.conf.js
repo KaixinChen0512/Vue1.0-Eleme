@@ -1,3 +1,4 @@
+/*webpack基础配置信息*/
 var path = require('path');
 var config = require('../config');
 var utils = require('./utils');

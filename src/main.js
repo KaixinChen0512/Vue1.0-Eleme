@@ -1,3 +1,4 @@
+/*主程序入口文件，加载各种公共组件*/
 import Vue from 'vue';
 import App from './App';
 import VueRouter from 'vue-router';

@@ -1,3 +1,4 @@
+/*构建本地服务器*/
 var path = require('path')
 var express = require('express')
 var webpack = require('webpack')

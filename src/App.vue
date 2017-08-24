@@ -1,3 +1,4 @@
+<!--页面入口文件-->
 <template>
   <div>
     <v-header :seller="seller"></v-header>

@@ -1,3 +1,4 @@
+/*webpack开发环境配置*/
 var config = require('../config');
 var webpack = require('webpack');
 var merge = require('webpack-merge');

@@ -1,4 +1,5 @@
 // https://github.com/shelljs/shelljs
+/*生产环境构建代码*/
 require('shelljs/global')
 env.NODE_ENV = 'production'
 
