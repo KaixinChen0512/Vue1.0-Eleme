@@ -1,6 +1,6 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
-/*项目一些配置变量*/
-var path = require('path')
+/* 项目一些配置变量*/
+var path = require('path');
 
 module.exports = {
   build: {
@@ -31,4 +31,4 @@ module.exports = {
     // just be aware of this issue when enabling this option.
     cssSourceMap: false
   }
-}
+};
